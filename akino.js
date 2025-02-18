@@ -37,13 +37,14 @@ async function main() {
         for (let item of $.userCookie) {
             if (item?.url) {
                 let res = await exchange(item);
-                $.notifyMsg.push(`账号[${index++}]: ${$.toStr(res)}`)
+                let str = index == $.userCookie?.length - 1 ? " └ " : " ├ ";
+                $.notifyMsg.push(`${str}index[${index++}]: ${res}`)
                 $.succCount++
             } else {
                 throw new Error("opts参数缺失，请先设置模块参数");
             }
         }
-        $.msg($.name, `共${$.userCookie?.length}个账号,成功${$.succCount}个`, $.notifyMsg.join("\n"));
+        $.msg($.name, `✅ 共${$.userCookie?.length}个账号,成功${$.succCount}个,失败${$.userCookie?.length - $.succCount}个`, $.notifyMsg.join("\n"));
     } catch (e) {
         throw e;
     }
@@ -56,7 +57,7 @@ function exchange(opts) {
             $[opts?.method](opts, (err, resp, data) => {
                 let res = $.toObj(data) || data;
                 $.info($.toStr(res));
-                resolve(executeCode(res, $.arguments?.path || "") ?? res);
+                resolve(executeCode(res, $.arguments?.path || "") ?? $.toStr(res));
             });
         });
     } catch (e) {
