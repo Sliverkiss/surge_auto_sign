@@ -1,4 +1,4 @@
-const moduleName = "Surge通用重放脚本";
+const moduleName = "Akino CheckIn";
 const $ = new Env(moduleName);
 //获取参数
 $.arguments = getArguments();
@@ -38,13 +38,13 @@ async function main() {
             if (item?.url) {
                 let res = await exchange(item);
                 let str = index == $.userCookie?.length - 1 ? " └ " : " ├ ";
-                $.notifyMsg.push(`${str}index[${index++}]: ${res}`)
+                $.notifyMsg.push(`${str}[${index++}]: ${res}`)
                 $.succCount++
             } else {
                 throw new Error("opts参数缺失，请先设置模块参数");
             }
         }
-        $.msg($.name, `✅ 共${$.userCookie?.length}个账号,成功${$.succCount}个,失败${$.userCookie?.length - $.succCount}个`, $.notifyMsg.join("\n"));
+        $.msg($.name, ` ❀ 共${$.userCookie?.length}个账号,成功${$.succCount}个,失败${$.userCookie?.length - $.succCount}个`, $.notifyMsg.join("\n"));
     } catch (e) {
         throw e;
     }
