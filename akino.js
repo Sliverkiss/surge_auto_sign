@@ -91,7 +91,7 @@ function getCookie() {
                 $.userCookie.push(opts);
             }
             $.setjson($.userCookie, `@akino.record.${$.ckName}`);
-            let result = url && method ? `✅ [${$.accountIndex}] create/update record data success!` : `❌  [${$.accountIndex}]  create/update record data error!`
+            let result = url && method ? `🎉 账号[${$.accountIndex}]获取重放数据成功!` : `❌  账号[${$.accountIndex}]获取重放数据失败!`
             $.msg($.name, result, ``);
         }
     } catch (e) {
