@@ -33,11 +33,11 @@ async function main() {
     try {
         if ($.userCookie.length <= 0) return $.msg($.name, "❌ account not found");
 
-        let index = 0;
+        let index = 1;
         for (let item of $.userCookie) {
             if (item?.url) {
                 let res = await exchange(item);
-                let str = index == $.userCookie?.length - 1 ? " └ " : " ├ ";
+                let str = index == $.userCookie?.length ? " └ " : " ├ ";
                 $.notifyMsg.push(`${str}[${index++}]: ${$.toStr(res)}`)
                 $.succCount++
             } else {
