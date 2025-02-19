@@ -1,6 +1,7 @@
 const moduleName = "Akino CheckIn";
 const $ = new Env(moduleName);
 //获取参数
+$.is_debug = $.getdata("is_debug")||false
 $.arguments = getArguments();
 $.name = $.arguments?.scriptName || moduleName;//脚本名
 $.ckName = $.arguments?.ckName || $.getdata("sliverkiss_surge_retry") || "default";//变量名
@@ -10,7 +11,6 @@ $.userCookie = $.arguments?.account || [];//账号数组
 $.accountIndex = parseInt($.arguments?.accountIndex || 0)//账号数组下标
 //用户多账号配置
 $.succCount = 0, $.notifyMsg = [], $.is_debug = ($.isNode() ? process.env.IS_DEDUG : $.getdata('is_debug')) || 'false';
-
 //主程序执行入口
 !(async () => {
     try {
@@ -32,10 +32,11 @@ $.succCount = 0, $.notifyMsg = [], $.is_debug = ($.isNode() ? process.env.IS_DED
 async function main() {
     try {
         if ($.userCookie.length <= 0) return $.msg($.name, "❌ account not found");
-
+        $.info(`当前共${$.userCookie?.length}个账号`)
         let index = 0;
         for (let item of $.userCookie) {
             if (item?.url) {
+                $.info(`账号[${index+1}]开始执行任务...`)
                 let res = await exchange(item);
                 let str = index == $.userCookie?.length-1 ? " └ " : " ├ ";
                 res = typeof res === 'string' ? res : $.toStr(res);
@@ -137,12 +138,14 @@ function getArguments() {
     } else {
         arg = {};
     }
-    $.info(`传入的 $argument: ${$.toStr(arg)} `);
-
+    
     arg = { ...arg, account: $.getjson(`@akino.record.${arg.ckName}`) || [] };
-
-    $.info(`从持久化存储读取参数后: ${$.toStr(arg)} `);
-
+    
+    if($.is_debug!="false"){
+        $.info(`传入的 $argument: ${$.toStr(arg)} `);
+        $.info(`从持久化存储读取参数后: ${$.toStr(arg)} `);
+    }
+    
     return arg;
 }
 
