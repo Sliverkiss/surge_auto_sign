@@ -38,7 +38,7 @@ async function main() {
             if (item?.url) {
                 let res = await exchange(item);
                 let str = index == $.userCookie?.length - 1 ? " └ " : " ├ ";
-                $.notifyMsg.push(`${str}[${index++}]: ${res}`)
+                $.notifyMsg.push(`${str}[${index++}]: ${$.toStr(res)}`)
                 $.succCount++
             } else {
                 throw new Error("opts参数缺失，请先设置模块参数");
@@ -57,7 +57,7 @@ function exchange(opts) {
             $[opts?.method](opts, (err, resp, data) => {
                 let res = $.toObj(data) || data;
                 $.info($.toStr(res));
-                resolve(executeCode(res, $.arguments?.path || "") ?? $.toStr(res));
+                resolve(executeCode(res, $.arguments?.path || "") ?? res);
             });
         });
     } catch (e) {
