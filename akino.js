@@ -36,10 +36,10 @@ async function main() {
         let index = 0;
         for (let item of $.userCookie) {
             if (item?.url) {
-                $.info(`账号[${index+1}]开始执行任务...`)
                 let res = await exchange(item);
                 let str = index == $.userCookie?.length-1 ? " └ " : " ├ ";
                 res = typeof res === 'string' ? res : $.toStr(res);
+                $.info(`账号[${index+1}]: ${res}`)
                 $.notifyMsg.push(`${str}[${index++}]: ${res}`)
                 $.succCount++
             } else {
@@ -58,7 +58,6 @@ function exchange(opts) {
         return new Promise((resolve) => {
             $[opts?.method](opts, (err, resp, data) => {
                 let res = $.toObj(data) || data;
-                $.info($.toStr(res));
                 resolve(executeCode(res, $.arguments?.path || "") ?? res);
             });
         });
