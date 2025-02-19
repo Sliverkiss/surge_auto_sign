@@ -33,12 +33,13 @@ async function main() {
     try {
         if ($.userCookie.length <= 0) return $.msg($.name, "❌ account not found");
 
-        let index = 1;
+        let index = 0;
         for (let item of $.userCookie) {
             if (item?.url) {
                 let res = await exchange(item);
-                let str = index == $.userCookie?.length ? " └ " : " ├ ";
-                $.notifyMsg.push(`${str}[${index++}]: ${$.toStr(res)}`)
+                let str = index == $.userCookie?.length-1 ? " └ " : " ├ ";
+                res = typeof res === 'string' ? res : $.toStr(res);
+                $.notifyMsg.push(`${str}[${index++}]: ${res}`)
                 $.succCount++
             } else {
                 throw new Error("opts参数缺失，请先设置模块参数");
